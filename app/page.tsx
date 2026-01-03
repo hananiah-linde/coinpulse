@@ -13,7 +13,7 @@ const columns: DataTableColumn<TrendingCoin>[] = [
             const item = coin.item;
 
             return (
-                <Link href={`/coins/${item.id}`}>
+                <Link href={`/coins/${item.id}`} className="flex items-center gap-2">
                     <Image src={item.large} alt={item.name} width={36} height={36} />
                     <p>{item.name}</p>
                 </Link>
@@ -28,7 +28,7 @@ const columns: DataTableColumn<TrendingCoin>[] = [
             const isTrendingUp = item.data.price_change_percentage_24h.usd > 0;
 
             return (
-                <div className={cn('price-change', isTrendingUp ? 'text-green-500' : 'text-red-500')}>
+                <div className={cn('price-change flex items-center gap-1', isTrendingUp ? 'text-green-500' : 'text-red-500')}>
                     <p>
                         {isTrendingUp ? (
                             <TrendingUp width={16} height={16} />
@@ -36,8 +36,65 @@ const columns: DataTableColumn<TrendingCoin>[] = [
                             <TrendingDown width={16} height={16} />
                         )}
                     </p>
+                    <p>{item.data.price_change_percentage_24h.usd.toFixed(2)}%</p>
                 </div>
             )
+        }
+    },
+    {
+        header: 'Price',
+        cellClassName: 'price-cell',
+        cell: (coin) => `$${coin.item.data.price.toLocaleString()}`
+    }
+]
+
+const dummyTrendingCoins: TrendingCoin[] = [
+    {
+        item: {
+            id: 'bitcoin',
+            name: 'Bitcoin',
+            symbol: 'BTC',
+            market_cap_rank: 1,
+            thumb: '/logo.svg',
+            large: '/logo.svg',
+            data: {
+                price: 89113,
+                price_change_percentage_24h: {
+                    usd: 2.5
+                }
+            }
+        }
+    },
+    {
+        item: {
+            id: 'ethereum',
+            name: 'Ethereum',
+            symbol: 'ETH',
+            market_cap_rank: 2,
+            thumb: '/logo.svg',
+            large: '/logo.svg',
+            data: {
+                price: 4500,
+                price_change_percentage_24h: {
+                    usd: -1.2
+                }
+            }
+        }
+    },
+    {
+        item: {
+            id: 'solana',
+            name: 'Solana',
+            symbol: 'SOL',
+            market_cap_rank: 5,
+            thumb: '/logo.svg',
+            large: '/logo.svg',
+            data: {
+                price: 210,
+                price_change_percentage_24h: {
+                    usd: 5.7
+                }
+            }
         }
     }
 ]
@@ -57,8 +114,9 @@ const Page = () => {
 
             <p>Trending Coins</p>
             <DataTable
-                data={[]}
-                columns={[]}
+                data={dummyTrendingCoins}
+                columns={columns}
+                rowKey={(coin) => coin.item.id}
             />
         </section>
 
