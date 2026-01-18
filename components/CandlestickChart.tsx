@@ -79,7 +79,7 @@ const CandlestickChart = ({
       chartRef.current = null;
       candleSeriesRef.current = null;
     };
-  }, [height, period]);
+  }, [height, period, ohlcData]);
 
   useEffect(() => {
     if (!candleSeriesRef.current) return;
